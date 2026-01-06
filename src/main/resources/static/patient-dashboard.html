@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic - Patient Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="patient-dashboard">
+    <div class="app-shell">
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <div class="avatar-circle">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div>
+            <div class="top-bar-title" id="topBarWelcome">Welcome back,</div>
+            <div class="top-bar-subtitle" id="topBarContext">
+              Manage your care in one place.
+            </div>
+          </div>
+        </div>
+        <div class="top-bar-right">
+          <div class="time-pill" id="timePill">7:04</div>
+          <button class="outline-btn" id="topBarAuthBtn">Sign Out</button>
+        </div>
+      </header>
+
+      <main class="dashboard-page">
+        <section class="dashboard-main">
+          <h2 class="dashboard-heading">Dashboard</h2>
+          <p class="dashboard-tagline">Manage your care in one place.</p>
+
+          <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input
+              class="search-input"
+              type="text"
+              placeholder="Search"
+              aria-label="Search"
+            />
+          </div>
+
+          <div class="dashboard-card-row" style="margin-top: 36px">
+            <a href="patient-book-appointment.html" class="nav-card">
+              <div class="nav-card-icon">
+                <i class="fa-regular fa-calendar-plus"></i>
+              </div>
+              <div class="nav-card-title">Book Appointment</div>
+              <div class="nav-card-sub">
+                Schedule your visit in a few easy steps.
+              </div>
+            </a>
+
+            <a href="patient-my-appointments.html" class="nav-card">
+              <div class="nav-card-icon">
+                <i class="fa-regular fa-calendar-check"></i>
+              </div>
+              <div class="nav-card-title">My Appointments</div>
+              <div class="nav-card-sub">
+                Track your upcoming and past visits.
+              </div>
+            </a>
+
+            <a href="patient-view-doctors.html" class="nav-card">
+              <div class="nav-card-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+              </div>
+              <div class="nav-card-title">View Doctors</div>
+              <div class="nav-card-sub">
+                Find specialists suited to your needs.
+              </div>
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="page-footer">
+        <button class="logout-pill" data-logout>
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Logout</span>
+        </button>
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

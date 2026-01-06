@@ -1,0 +1,2590 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic Management System</title>
+    <meta http-equiv="refresh" content="0; url=signup.html" />
+  </head>
+  <body>
+    <p>
+      Redirecting to
+      <a href="signup.html">Clinic Management System - Sign Up</a>...
+    </p>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic Management System</title>
+    <!-- Inter font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      :root {
+        --primary: #6c63ff; /* header / buttons (approx. from design) */
+        --primary-dark: #5148d6;
+        --primary-soft: #e5e4ff;
+        --bg-page: #f8fafc;
+        --card-bg: #ffffff;
+        --accent-lilac: #f2ecff;
+        --text-main: #1e293b;
+        --text-subtle: #64748b;
+        --border-soft: #e2e8f0;
+        --status-confirmed: #10b981;
+        --status-pending: #f59e0b;
+        --danger: #f97373;
+        --shadow-soft: 0 18px 35px rgba(15, 23, 42, 0.08);
+        --radius-lg: 16px;
+        --radius-xl: 22px;
+        --transition-fast: 0.2s ease;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: #111827;
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Overall app shell (simulates Figma canvas on dark bg) */
+      .app-shell {
+        width: 100%;
+        max-width: 1440px;
+        min-height: 720px;
+        background: linear-gradient(135deg, #f5f3ff, #eef2ff);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 30px 60px rgba(15, 23, 42, 0.55);
+        position: relative;
+      }
+
+      /* Top bar common */
+      .top-bar {
+        height: 80px;
+        background: var(--primary-soft);
+        padding: 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      }
+
+      .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .avatar-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        background: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: var(--primary-dark);
+      }
+
+      .top-bar-title {
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .top-bar-subtitle {
+        font-weight: 400;
+        font-size: 13px;
+        color: var(--text-subtle);
+      }
+
+      .top-bar-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .time-pill {
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: #ffffff;
+        font-weight: 500;
+        font-size: 13px;
+        color: var(--text-main);
+        box-shadow: 0 6px 15px rgba(15, 23, 42, 0.12);
+      }
+
+      .outline-btn {
+        padding: 8px 18px;
+        border-radius: 999px;
+        border: 1px solid var(--primary-dark);
+        background: transparent;
+        color: var(--primary-dark);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background var(--transition-fast),
+          color var(--transition-fast), transform var(--transition-fast),
+          box-shadow var(--transition-fast);
+      }
+
+      .outline-btn:hover {
+        background: var(--primary-dark);
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 16px rgba(79, 70, 229, 0.35);
+      }
+
+      /* Generic layout for auth vs dashboard */
+      .view {
+        display: none;
+        height: calc(100% - 80px);
+      }
+
+      .view.active {
+        display: flex;
+      }
+
+      /********************
+       * AUTHENTICATION
+       ********************/
+      .auth-view {
+        padding: 48px 64px 64px;
+        display: grid;
+        grid-template-columns: minmax(0, 4fr) minmax(0, 3.6fr);
+        gap: 40px;
+        align-items: center;
+      }
+
+      .auth-hero {
+        padding-right: 40px;
+      }
+
+      .tagline-kicker {
+        font-size: 14px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--primary-dark);
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .hero-heading {
+        font-size: 32px;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 10px;
+        color: var(--text-main);
+      }
+
+      .hero-sub {
+        font-size: 15px;
+        line-height: 1.6;
+        max-width: 360px;
+        color: var(--text-subtle);
+      }
+
+      .auth-card {
+        background: var(--accent-lilac);
+        border-radius: 26px;
+        box-shadow: var(--shadow-soft);
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+      }
+
+      .auth-tabs {
+        display: flex;
+        background: #d7cffc;
+      }
+
+      .auth-tab {
+        flex: 1;
+        padding: 12px 18px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        color: #312e81;
+        position: relative;
+        transition: background var(--transition-fast),
+          color var(--transition-fast);
+      }
+
+      .auth-tab.active {
+        background: var(--primary-dark);
+        color: #ffffff;
+        box-shadow: 0 12px 25px rgba(79, 70, 229, 0.45);
+        z-index: 1;
+      }
+
+      .auth-body {
+        padding: 26px 32px 32px;
+      }
+
+      .auth-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 18px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 16px;
+      }
+
+      .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 13px;
+      }
+
+      .form-field.full {
+        grid-column: 1 / -1;
+      }
+
+      .form-label {
+        font-weight: 500;
+        color: var(--text-main);
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      .input,
+      .select {
+        width: 100%;
+        border-radius: 999px;
+        border: 1px solid #cbd5f5;
+        padding: 10px 14px;
+        font-size: 13px;
+        outline: none;
+        background: #ffffff;
+        color: var(--text-main);
+        transition: border-color var(--transition-fast),
+          box-shadow var(--transition-fast), background var(--transition-fast);
+      }
+
+      .input:focus,
+      .select:focus {
+        border-color: var(--primary-dark);
+        box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.3);
+      }
+
+      .input.error {
+        border-color: var(--danger);
+        box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.4);
+      }
+
+      .input::placeholder {
+        color: #cbd5e1;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #94a3b8;
+        font-size: 14px;
+      }
+
+      .primary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border-radius: 999px;
+        border: none;
+        background: var(--primary-dark);
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 10px 30px;
+        margin-top: 18px;
+        cursor: pointer;
+        box-shadow: 0 18px 30px rgba(79, 70, 229, 0.45);
+        transition: background var(--transition-fast),
+          transform var(--transition-fast), box-shadow var(--transition-fast);
+      }
+
+      .primary-btn:hover {
+        background: #4338ca;
+        transform: translateY(-1px);
+      }
+
+      .primary-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 10px 20px rgba(79, 70, 229, 0.35);
+      }
+
+      .form-error-msg {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--danger);
+      }
+
+      /********************
+       * DASHBOARD LAYOUT
+       ********************/
+      .dashboard-view {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 36px;
+        padding: 32px 44px 36px;
+      }
+
+      .dashboard-main,
+      .dashboard-secondary {
+        background: rgba(255, 255, 255, 0.78);
+        border-radius: var(--radius-xl);
+        padding: 32px 32px 30px;
+        box-shadow: var(--shadow-soft);
+        position: relative;
+      }
+
+      .dashboard-heading {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      .dashboard-tagline {
+        font-size: 12px;
+        color: var(--text-subtle);
+      }
+
+      .search-bar {
+        margin-top: 24px;
+        margin-bottom: 32px;
+        position: relative;
+      }
+
+      .search-input {
+        width: 100%;
+        border-radius: 999px;
+        border: 1px solid #e2e8f0;
+        padding: 10px 16px 10px 32px;
+        font-size: 13px;
+        background: #f9fafb;
+        outline: none;
+      }
+
+      .search-input::placeholder {
+        color: #cbd5e1;
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 13px;
+      }
+
+      .dashboard-card-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .nav-card {
+        border-radius: 24px;
+        background: #efe9ff;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        padding: 18px 14px;
+        cursor: pointer;
+        transition: transform var(--transition-fast),
+          box-shadow var(--transition-fast), background var(--transition-fast);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .nav-card-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 999px;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-dark);
+        font-size: 15px;
+      }
+
+      .nav-card-title {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .nav-card-sub {
+        font-size: 11px;
+        color: var(--text-subtle);
+      }
+
+      .nav-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 26px rgba(148, 163, 184, 0.55);
+        background: #e3d9ff;
+      }
+
+      .logout-pill {
+        position: absolute;
+        left: 24px;
+        bottom: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px 6px 12px;
+        border-radius: 999px;
+        background: #fecaca;
+        color: #b91c1c;
+        font-size: 12px;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(248, 113, 113, 0.45);
+        transition: transform var(--transition-fast),
+          box-shadow var(--transition-fast);
+      }
+
+      .logout-pill i {
+        font-size: 13px;
+      }
+
+      .logout-pill span {
+        font-weight: 600;
+      }
+
+      .logout-pill:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 28px rgba(248, 113, 113, 0.65);
+      }
+
+      /********************
+       * SIDEBAR LAYOUT
+       ********************/
+      .shell-with-sidebar {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        height: calc(100% - 80px);
+      }
+
+      .sidebar {
+        background: #e5ddff;
+        border-right: 1px solid rgba(148, 163, 184, 0.35);
+        padding: 22px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        position: relative;
+      }
+
+      .sidebar-section-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #4b5563;
+      }
+
+      .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 6px;
+      }
+
+      .sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 13px;
+        color: #374151;
+        background: transparent;
+        border: none;
+        text-align: left;
+        transition: background var(--transition-fast),
+          color var(--transition-fast), transform var(--transition-fast);
+      }
+
+      .sidebar-item-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 999px;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: var(--primary-dark);
+      }
+
+      .sidebar-item.active {
+        background: #c7b6ff;
+        color: #111827;
+        box-shadow: 0 12px 22px rgba(129, 140, 248, 0.5);
+        transform: translateY(-1px);
+      }
+
+      .sidebar-footer-logout {
+        margin-top: auto;
+      }
+
+      .sidebar-footer-logout .logout-pill {
+        position: static;
+        box-shadow: 0 10px 18px rgba(248, 113, 113, 0.5);
+      }
+
+      /********************
+       * APPOINTMENT / ADD DOCTOR CONTENT
+       ********************/
+      .content-panel {
+        background: #fdfdff;
+        padding: 28px 40px 30px;
+        overflow-y: auto;
+      }
+
+      .content-heading-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+
+      .content-heading {
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .content-subtitle {
+        font-size: 11px;
+        color: var(--text-subtle);
+        font-style: italic;
+      }
+
+      .back-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 999px;
+        border: 1px solid #e2e8f0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #6b7280;
+        transition: background var(--transition-fast);
+      }
+
+      .back-icon:hover {
+        background: #e5e7eb;
+      }
+
+      .two-column-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 20px;
+        align-items: flex-start;
+      }
+
+      .inline-fields {
+        display: flex;
+        gap: 8px;
+      }
+
+      .am-pm-toggle {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 11px;
+      }
+
+      .am-pm-buttons {
+        display: inline-flex;
+        border-radius: 999px;
+        overflow: hidden;
+        border: 1px solid #cbd5f5;
+      }
+
+      .am-pm-btn {
+        min-width: 36px;
+        font-size: 11px;
+        padding: 7px 0;
+        border: none;
+        background: #f9fafb;
+        cursor: pointer;
+        transition: background var(--transition-fast),
+          color var(--transition-fast);
+      }
+
+      .am-pm-btn.active {
+        background: var(--primary-dark);
+        color: #ffffff;
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        background: #ecfdf3;
+        color: var(--status-confirmed);
+      }
+
+      .status-badge.pending {
+        background: #fffbeb;
+        color: var(--status-pending);
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: currentColor;
+      }
+
+      .appointment-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .appointment-card {
+        border-radius: 16px;
+        background: #f3f4ff;
+        border: 1px solid #e5e7eb;
+        padding: 12px 16px 12px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.3fr) auto;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .appointment-card:nth-child(2) {
+        background: #c4b4ff;
+      }
+
+      .appointment-title {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .appointment-speciality {
+        font-size: 11px;
+        color: var(--text-subtle);
+      }
+
+      .appointment-meta {
+        font-size: 11px;
+        color: var(--text-main);
+      }
+
+      .appointment-meta span {
+        font-weight: 600;
+      }
+
+      .danger-pill {
+        border-radius: 999px;
+        padding: 6px 14px;
+        border: none;
+        background: #f97373;
+        color: #ffffff;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 12px 22px rgba(248, 113, 113, 0.6);
+        transition: transform var(--transition-fast);
+      }
+
+      .danger-pill:hover {
+        transform: translateY(-1px);
+      }
+
+      /* Doctor table */
+      .doctor-form-section {
+        margin-bottom: 22px;
+      }
+
+      .doctor-table-wrapper {
+        margin-top: 6px;
+        background: #f5f5ff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+      }
+
+      .doctor-table-header {
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #e4e4ff;
+      }
+
+      .doctor-table-title {
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .doctor-table-search {
+        width: 180px;
+        position: relative;
+      }
+
+      .doctor-table-search input {
+        width: 100%;
+        border-radius: 999px;
+        border: 1px solid #cbd5f5;
+        padding: 6px 26px 6px 20px;
+        font-size: 12px;
+        background: #f9fafb;
+        outline: none;
+      }
+
+      .doctor-table-search .fa-search {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+        color: #94a3b8;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      thead {
+        background: #e5e7eb;
+      }
+
+      th,
+      td {
+        padding: 8px 10px;
+        text-align: left;
+      }
+
+      th {
+        font-weight: 600;
+        font-size: 11px;
+        color: #4b5563;
+      }
+
+      tbody tr:nth-child(even) {
+        background: #f9fafb;
+      }
+
+      tbody tr:nth-child(odd) {
+        background: #f3f4ff;
+      }
+
+      .table-actions {
+        display: flex;
+        gap: 8px;
+        color: #6b7280;
+      }
+
+      .table-actions i {
+        cursor: pointer;
+      }
+
+      /********************
+       * RESPONSIVE
+       ********************/
+      .mobile-top-toggle {
+        display: none;
+      }
+
+      .mobile-sidebar-toggle {
+        display: none;
+      }
+
+      @media (max-width: 1024px) {
+        .app-shell {
+          max-width: 100%;
+          border-radius: 0;
+        }
+
+        .auth-view {
+          grid-template-columns: minmax(0, 1.4fr);
+          padding: 30px 20px 40px;
+        }
+
+        .auth-hero {
+          padding-right: 0;
+          margin-bottom: 18px;
+        }
+
+        .dashboard-view {
+          grid-template-columns: 1fr;
+          padding: 20px 20px 28px;
+        }
+
+        .dashboard-main,
+        .dashboard-secondary {
+          padding: 22px 22px 26px;
+        }
+
+        .shell-with-sidebar {
+          grid-template-columns: 60px minmax(0, 1fr);
+        }
+
+        .sidebar {
+          padding-inline: 10px;
+          align-items: center;
+        }
+
+        .sidebar-section-title {
+          display: none;
+        }
+
+        .sidebar-item-label {
+          display: none;
+        }
+
+        .sidebar-item {
+          justify-content: center;
+          padding-inline: 4px;
+        }
+
+        .sidebar-footer-logout {
+          width: 100%;
+        }
+
+        .sidebar-footer-logout .logout-pill {
+          justify-content: center;
+          width: 100%;
+          font-size: 0;
+        }
+
+        .sidebar-footer-logout .logout-pill span {
+          display: none;
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          background: #f8fafc;
+        }
+
+        .app-shell {
+          min-height: 100vh;
+          box-shadow: none;
+        }
+
+        .top-bar {
+          padding: 0 16px;
+        }
+
+        .top-bar-right {
+          gap: 10px;
+        }
+
+        .time-pill {
+          padding-inline: 10px;
+        }
+
+        .auth-view {
+          padding: 22px 16px 28px;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .dashboard-view {
+          padding: 16px;
+        }
+
+        .shell-with-sidebar {
+          display: block;
+        }
+
+        .sidebar {
+          position: fixed;
+          top: 80px;
+          left: 0;
+          bottom: 0;
+          width: 230px;
+          transform: translateX(-100%);
+          transition: transform var(--transition-fast);
+          z-index: 20;
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+
+        .mobile-sidebar-toggle {
+          display: inline-flex;
+          width: 32px;
+          height: 32px;
+          border-radius: 999px;
+          border: 1px solid #cbd5e1;
+          align-items: center;
+          justify-content: center;
+          background: #ffffff;
+          cursor: pointer;
+          color: #334155;
+        }
+
+        .content-panel {
+          padding: 20px 16px 24px;
+        }
+
+        .appointment-card {
+          grid-template-columns: minmax(0, 1.8fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell" id="appShell">
+      <!-- Top bar reused for all views -->
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <div class="avatar-circle">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div>
+            <div class="top-bar-title" id="topBarWelcome">Welcome back,</div>
+            <div class="top-bar-subtitle" id="topBarContext">
+              We make it easier for you to get the care you need.
+            </div>
+          </div>
+        </div>
+        <div class="top-bar-right">
+          <div class="time-pill" id="timePill">7:04</div>
+          <button class="outline-btn" id="topBarAuthBtn">Sign In</button>
+          <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </header>
+
+      <main class="view auth-view active" id="authView">
+        <section class="auth-hero">
+          <p class="tagline-kicker">CLINIC PORTAL</p>
+          <h1 class="hero-heading">
+            We make it easier for you to get the care you need.
+          </h1>
+          <p class="hero-sub">
+            Book visits, manage appointments, and stay connected with your care
+            team from one modern dashboard.
+          </p>
+        </section>
+
+        <section class="auth-card" aria-label="Authentication">
+          <div class="auth-tabs" role="tablist">
+            <button
+              class="auth-tab active"
+              data-role="patient"
+              id="patientTab"
+              role="tab"
+              aria-selected="true"
+            >
+              Patient
+            </button>
+            <button
+              class="auth-tab"
+              data-role="admin"
+              id="adminTab"
+              role="tab"
+              aria-selected="false"
+            >
+              Admin
+            </button>
+          </div>
+          <div class="auth-body">
+            <h2 class="auth-title" id="authTitle">Sign Up</h2>
+            <form id="authForm" novalidate>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label class="form-label" for="firstName">First Name</label>
+                  <input
+                    id="firstName"
+                    name="firstName"
+                    class="input"
+                    type="text"
+                    placeholder="First Name"
+                    required
+                  />
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="lastName">Last Name</label>
+                  <input
+                    id="lastName"
+                    name="lastName"
+                    class="input"
+                    type="text"
+                    placeholder="Last Name"
+                    required
+                  />
+                </div>
+                <div class="form-field full">
+                  <label class="form-label" for="authEmail">Email</label>
+                  <input
+                    id="authEmail"
+                    name="authEmail"
+                    class="input"
+                    type="email"
+                    placeholder="Email"
+                    required
+                  />
+                </div>
+                <div class="form-field full">
+                  <label class="form-label" for="password">Password</label>
+                  <div class="input-wrapper">
+                    <input
+                      id="password"
+                      name="password"
+                      class="input"
+                      type="password"
+                      placeholder="Password"
+                      required
+                      minlength="6"
+                    />
+                    <span
+                      class="toggle-password"
+                      data-target="password"
+                      aria-label="Toggle password visibility"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-field full">
+                  <label class="form-label" for="confirmPassword"
+                    >Confirm Password</label
+                  >
+                  <div class="input-wrapper">
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      class="input"
+                      type="password"
+                      placeholder="Confirm Password"
+                      required
+                    />
+                    <span
+                      class="toggle-password"
+                      data-target="confirmPassword"
+                      aria-label="Toggle confirm password visibility"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <p class="form-error-msg" id="authError"></p>
+              <button type="submit" class="primary-btn" id="authSubmitBtn">
+                <span>Sign Up</span>
+              </button>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <!-- PATIENT DASHBOARD VIEW -->
+      <main class="view dashboard-view" id="patientDashboardView">
+        <!-- Left: primary dashboard -->
+        <section class="dashboard-main">
+          <h2 class="dashboard-heading">Dashboard</h2>
+          <p class="dashboard-tagline">Manage your care in one place.</p>
+
+          <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input
+              class="search-input"
+              type="text"
+              placeholder="Search"
+              aria-label="Search"
+            />
+          </div>
+
+          <div class="dashboard-card-row">
+            <article
+              class="nav-card"
+              data-nav-target="bookAppointmentView"
+              id="cardBookAppointment"
+            >
+              <div class="nav-card-icon">
+                <i class="fa-regular fa-calendar-plus"></i>
+              </div>
+              <div class="nav-card-title">Book Appointment</div>
+              <div class="nav-card-sub">
+                Schedule your visit in a few easy steps.
+              </div>
+            </article>
+
+            <article
+              class="nav-card"
+              data-nav-target="patientAppointmentsView"
+              id="cardMyAppointments"
+            >
+              <div class="nav-card-icon">
+                <i class="fa-regular fa-calendar-check"></i>
+              </div>
+              <div class="nav-card-title">My Appointments</div>
+              <div class="nav-card-sub">
+                Track your upcoming and past visits.
+              </div>
+            </article>
+
+            <article
+              class="nav-card"
+              data-nav-target="patientDoctorsView"
+              id="cardViewDoctors"
+            >
+              <div class="nav-card-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+              </div>
+              <div class="nav-card-title">View Doctors</div>
+              <div class="nav-card-sub">
+                Find specialists suited to your needs.
+              </div>
+            </article>
+          </div>
+
+          <button class="logout-pill" data-logout>
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Logout</span>
+          </button>
+        </section>
+
+        <!-- Right: My Appointments preview -->
+        <section class="dashboard-secondary">
+          <div class="content-heading-row" style="margin-bottom: 14px">
+            <div>
+              <h3 class="content-heading">My Appointments</h3>
+              <p class="content-subtitle">
+                Review and manage your scheduled visits.
+              </p>
+            </div>
+          </div>
+          <div class="appointment-list" id="patientAppointmentListPreview">
+            <!-- Dynamic appointment cards injected here -->
+          </div>
+        </section>
+      </main>
+
+      <!-- ADMIN DASHBOARD VIEW -->
+      <main class="view dashboard-view" id="adminDashboardView">
+        <section class="dashboard-main">
+          <h2 class="dashboard-heading">Admin Dashboard</h2>
+          <p class="dashboard-tagline">
+            Keep track of doctors, appointments, and clinic activity.
+          </p>
+
+          <div class="dashboard-card-row" style="margin-top: 32px">
+            <article
+              class="nav-card"
+              data-nav-target="adminDoctorsView"
+              id="cardDoctorsList"
+            >
+              <div class="nav-card-icon">
+                <i class="fa-solid fa-id-badge"></i>
+              </div>
+              <div class="nav-card-title">Doctors List</div>
+              <div class="nav-card-sub">View and manage all doctors.</div>
+            </article>
+
+            <article
+              class="nav-card"
+              data-nav-target="adminAppointmentsView"
+              id="cardAppointmentList"
+            >
+              <div class="nav-card-icon">
+                <i class="fa-regular fa-clipboard"></i>
+              </div>
+              <div class="nav-card-title">Appointment List</div>
+              <div class="nav-card-sub">
+                Review and update all clinic bookings.
+              </div>
+            </article>
+
+            <article
+              class="nav-card"
+              data-nav-target="addDoctorView"
+              id="cardAddDoctor"
+            >
+              <div class="nav-card-icon">
+                <i class="fa-solid fa-user-plus"></i>
+              </div>
+              <div class="nav-card-title">Add Doctor</div>
+              <div class="nav-card-sub">
+                Register new specialists to your clinic.
+              </div>
+            </article>
+          </div>
+
+          <button class="logout-pill" data-logout>
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Logout</span>
+          </button>
+        </section>
+
+        <section class="dashboard-secondary">
+          <div class="content-heading-row" style="margin-bottom: 14px">
+            <div>
+              <h3 class="content-heading">Today at a Glance</h3>
+              <p class="content-subtitle">
+                Quick insight into your clinic schedule.
+              </p>
+            </div>
+          </div>
+          <div id="adminSummaryText" style="font-size: 13px; color: #4b5563">
+            <!-- Filled dynamically with counts -->
+          </div>
+        </section>
+      </main>
+
+      <!-- PATIENT BOOK APPOINTMENT -->
+      <main class="view shell-with-sidebar" id="bookAppointmentView">
+        <aside class="sidebar">
+          <div class="sidebar-section-title">Patient Menu</div>
+          <nav class="sidebar-nav">
+            <button
+              class="sidebar-item active"
+              data-patient-nav="bookAppointmentView"
+            >
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-circle-plus"></i>
+              </span>
+              <span class="sidebar-item-label">Book Appointment</span>
+            </button>
+            <button
+              class="sidebar-item"
+              data-patient-nav="patientAppointmentsView"
+            >
+              <span class="sidebar-item-icon">
+                <i class="fa-regular fa-calendar-days"></i>
+              </span>
+              <span class="sidebar-item-label">My Appointments</span>
+            </button>
+            <button class="sidebar-item" data-patient-nav="patientDoctorsView">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-user-doctor"></i>
+              </span>
+              <span class="sidebar-item-label">View Doctors</span>
+            </button>
+          </nav>
+
+          <div class="sidebar-footer-logout">
+            <button class="logout-pill" data-logout>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </aside>
+
+        <section class="content-panel">
+          <div class="content-heading-row">
+            <div>
+              <h2 class="content-heading">Book Appointment</h2>
+              <p class="content-subtitle">
+                Schedule your visit in a few easy steps.
+              </p>
+            </div>
+            <div class="back-icon" data-back-to="patientDashboardView">
+              <i class="fa-solid fa-arrow-left"></i>
+            </div>
+          </div>
+
+          <form id="bookAppointmentForm" novalidate class="two-column-form">
+            <div class="form-field full">
+              <label class="form-label" for="selectDoctor">Select Doctor</label>
+              <select
+                id="selectDoctor"
+                name="selectDoctor"
+                class="select"
+                required
+              >
+                <option value="">Select Doctor</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="appointmentDate">Date</label>
+              <div class="input-wrapper">
+                <input
+                  id="appointmentDate"
+                  type="date"
+                  class="input"
+                  placeholder="yyyy/mm/dd"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="appointmentTime">Time</label>
+              <div class="inline-fields">
+                <input
+                  id="appointmentTime"
+                  type="time"
+                  class="input"
+                  placeholder="Set Time"
+                  required
+                />
+                <div class="am-pm-toggle">
+                  <span>AM / PM</span>
+                  <div class="am-pm-buttons" id="ampmToggle">
+                    <button
+                      type="button"
+                      class="am-pm-btn active"
+                      data-value="AM"
+                    >
+                      AM
+                    </button>
+                    <button type="button" class="am-pm-btn" data-value="PM">
+                      PM
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-field full">
+              <label class="form-label" for="appointmentNotes">Notes</label>
+              <textarea
+                id="appointmentNotes"
+                class="input"
+                rows="3"
+                style="border-radius: 16px; resize: vertical"
+                placeholder="Anything your doctor should know before the visit."
+              ></textarea>
+            </div>
+
+            <div class="form-field full">
+              <button type="submit" class="primary-btn" style="margin-top: 8px">
+                Confirm
+              </button>
+              <p class="form-error-msg" id="bookAppointmentError"></p>
+            </div>
+          </form>
+        </section>
+      </main>
+
+      <!-- PATIENT MY APPOINTMENTS (FULL PAGE) -->
+      <main class="view shell-with-sidebar" id="patientAppointmentsView">
+        <aside class="sidebar">
+          <div class="sidebar-section-title">Patient Menu</div>
+          <nav class="sidebar-nav">
+            <button class="sidebar-item" data-patient-nav="bookAppointmentView">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-circle-plus"></i>
+              </span>
+              <span class="sidebar-item-label">Book Appointment</span>
+            </button>
+            <button
+              class="sidebar-item active"
+              data-patient-nav="patientAppointmentsView"
+            >
+              <span class="sidebar-item-icon">
+                <i class="fa-regular fa-calendar-days"></i>
+              </span>
+              <span class="sidebar-item-label">My Appointments</span>
+            </button>
+            <button class="sidebar-item" data-patient-nav="patientDoctorsView">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-user-doctor"></i>
+              </span>
+              <span class="sidebar-item-label">View Doctors</span>
+            </button>
+          </nav>
+
+          <div class="sidebar-footer-logout">
+            <button class="logout-pill" data-logout>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </aside>
+
+        <section class="content-panel">
+          <div class="content-heading-row">
+            <div>
+              <h2 class="content-heading">My Appointments</h2>
+              <p class="content-subtitle">Manage your upcoming visits.</p>
+            </div>
+            <div class="back-icon" data-back-to="patientDashboardView">
+              <i class="fa-solid fa-arrow-left"></i>
+            </div>
+          </div>
+
+          <div class="appointment-list" id="patientAppointmentListFull">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
+      </main>
+
+      <!-- PATIENT VIEW DOCTORS -->
+      <main class="view shell-with-sidebar" id="patientDoctorsView">
+        <aside class="sidebar">
+          <div class="sidebar-section-title">Patient Menu</div>
+          <nav class="sidebar-nav">
+            <button class="sidebar-item" data-patient-nav="bookAppointmentView">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-circle-plus"></i>
+              </span>
+              <span class="sidebar-item-label">Book Appointment</span>
+            </button>
+            <button
+              class="sidebar-item"
+              data-patient-nav="patientAppointmentsView"
+            >
+              <span class="sidebar-item-icon">
+                <i class="fa-regular fa-calendar-days"></i>
+              </span>
+              <span class="sidebar-item-label">My Appointments</span>
+            </button>
+            <button
+              class="sidebar-item active"
+              data-patient-nav="patientDoctorsView"
+            >
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-user-doctor"></i>
+              </span>
+              <span class="sidebar-item-label">View Doctors</span>
+            </button>
+          </nav>
+
+          <div class="sidebar-footer-logout">
+            <button class="logout-pill" data-logout>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </aside>
+
+        <section class="content-panel">
+          <div class="content-heading-row">
+            <div>
+              <h2 class="content-heading">View Doctors</h2>
+              <p class="content-subtitle">
+                Explore our specialists and their qualifications.
+              </p>
+            </div>
+            <div class="back-icon" data-back-to="patientDashboardView">
+              <i class="fa-solid fa-arrow-left"></i>
+            </div>
+          </div>
+
+          <div id="patientDoctorsGrid" class="appointment-list">
+            <!-- Reuse card style for a simple doctor list -->
+          </div>
+        </section>
+      </main>
+
+      <!-- ADMIN ADD DOCTOR -->
+      <main class="view shell-with-sidebar" id="addDoctorView">
+        <aside class="sidebar">
+          <div class="sidebar-section-title">Admin Menu</div>
+          <nav class="sidebar-nav">
+            <button class="sidebar-item" data-admin-nav="adminDoctorsView">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-id-badge"></i>
+              </span>
+              <span class="sidebar-item-label">Doctors List</span>
+            </button>
+            <button class="sidebar-item" data-admin-nav="adminAppointmentsView">
+              <span class="sidebar-item-icon">
+                <i class="fa-regular fa-clipboard"></i>
+              </span>
+              <span class="sidebar-item-label">Appointment List</span>
+            </button>
+            <button class="sidebar-item active" data-admin-nav="addDoctorView">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-user-plus"></i>
+              </span>
+              <span class="sidebar-item-label">Add Doctor</span>
+            </button>
+          </nav>
+
+          <div class="sidebar-footer-logout">
+            <button class="logout-pill" data-logout>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </aside>
+
+        <section class="content-panel">
+          <div class="content-heading-row">
+            <div>
+              <h2 class="content-heading">Add Doctor</h2>
+              <p class="content-subtitle">
+                Register new doctors to your clinic roster.
+              </p>
+            </div>
+            <div class="back-icon" data-back-to="adminDashboardView">
+              <i class="fa-solid fa-arrow-left"></i>
+            </div>
+          </div>
+
+          <section class="doctor-form-section">
+            <form id="addDoctorForm" class="two-column-form" novalidate>
+              <div class="form-field">
+                <label class="form-label" for="doctorFirstName"
+                  >First Name</label
+                >
+                <input
+                  id="doctorFirstName"
+                  class="input"
+                  type="text"
+                  placeholder="First Name"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="doctorLastName">Last Name</label>
+                <input
+                  id="doctorLastName"
+                  class="input"
+                  type="text"
+                  placeholder="Last Name"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="doctorEmail">Email</label>
+                <input
+                  id="doctorEmail"
+                  class="input"
+                  type="email"
+                  placeholder="Email"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="doctorPhone"
+                  >Mobile Number</label
+                >
+                <input
+                  id="doctorPhone"
+                  class="input"
+                  type="tel"
+                  placeholder="Mobile Number"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <span class="form-label">Gender</span>
+                <div style="display: flex; gap: 16px; margin-top: 4px">
+                  <label style="font-size: 13px">
+                    <input
+                      type="radio"
+                      name="doctorGender"
+                      value="Male"
+                      checked
+                    />
+                    Male
+                  </label>
+                  <label style="font-size: 13px">
+                    <input type="radio" name="doctorGender" value="Female" />
+                    Female
+                  </label>
+                  <label style="font-size: 13px">
+                    <input type="radio" name="doctorGender" value="Other" />
+                    Other
+                  </label>
+                </div>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="doctorQualification"
+                  >Qualification</label
+                >
+                <input
+                  id="doctorQualification"
+                  class="input"
+                  type="text"
+                  placeholder="Qualification"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="doctorSpecialization"
+                  >Specialization</label
+                >
+                <input
+                  id="doctorSpecialization"
+                  class="input"
+                  type="text"
+                  placeholder="Specialization"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="doctorFee"
+                  >Consultation Fee</label
+                >
+                <input
+                  id="doctorFee"
+                  class="input"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="Rs 0.00"
+                  required
+                />
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="doctorClear">&nbsp;</label>
+                <button
+                  id="doctorClear"
+                  type="button"
+                  class="outline-btn"
+                  style="width: 100%"
+                >
+                  Clear
+                </button>
+              </div>
+              <div class="form-field full">
+                <button type="submit" class="primary-btn">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>Add Doctor</span>
+                </button>
+                <p class="form-error-msg" id="addDoctorError"></p>
+              </div>
+            </form>
+          </section>
+
+          <section class="doctor-table-wrapper" aria-label="Doctors List">
+            <div class="doctor-table-header">
+              <div class="doctor-table-title">Doctors List</div>
+              <div class="doctor-table-search">
+                <input
+                  type="text"
+                  id="doctorSearchInput"
+                  placeholder="Search"
+                  aria-label="Search doctors"
+                />
+                <i class="fa-solid fa-search"></i>
+              </div>
+            </div>
+            <div style="overflow-x: auto; max-height: 260px">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width: 40px">No.</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Specialization</th>
+                    <th style="width: 90px">Fee</th>
+                    <th style="width: 70px"></th>
+                  </tr>
+                </thead>
+                <tbody id="doctorsTableBody">
+                  <!-- Doctor rows populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <main class="view shell-with-sidebar" id="adminDoctorsView">
+        <aside class="sidebar">
+          <div class="sidebar-section-title">Admin Menu</div>
+          <nav class="sidebar-nav">
+            <button
+              class="sidebar-item active"
+              data-admin-nav="adminDoctorsView"
+            >
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-id-badge"></i>
+              </span>
+              <span class="sidebar-item-label">Doctors List</span>
+            </button>
+            <button class="sidebar-item" data-admin-nav="adminAppointmentsView">
+              <span class="sidebar-item-icon">
+                <i class="fa-regular fa-clipboard"></i>
+              </span>
+              <span class="sidebar-item-label">Appointment List</span>
+            </button>
+            <button class="sidebar-item" data-admin-nav="addDoctorView">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-user-plus"></i>
+              </span>
+              <span class="sidebar-item-label">Add Doctor</span>
+            </button>
+          </nav>
+
+          <div class="sidebar-footer-logout">
+            <button class="logout-pill" data-logout>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </aside>
+
+        <section class="content-panel">
+          <div class="content-heading-row">
+            <div>
+              <h2 class="content-heading">Doctors List</h2>
+              <p class="content-subtitle">
+                See all doctors currently registered.
+              </p>
+            </div>
+            <div class="back-icon" data-back-to="adminDashboardView">
+              <i class="fa-solid fa-arrow-left"></i>
+            </div>
+          </div>
+          <section class="doctor-table-wrapper">
+            <div class="doctor-table-header">
+              <div class="doctor-table-title">Doctors List</div>
+              <div class="doctor-table-search">
+                <input
+                  type="text"
+                  id="doctorSearchInput2"
+                  placeholder="Search"
+                  aria-label="Search doctors"
+                />
+                <i class="fa-solid fa-search"></i>
+              </div>
+            </div>
+            <div style="overflow-x: auto; max-height: 300px">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width: 40px">No.</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Specialization</th>
+                    <th style="width: 90px">Fee</th>
+                    <th style="width: 70px"></th>
+                  </tr>
+                </thead>
+                <tbody id="doctorsTableBody2"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <main class="view shell-with-sidebar" id="adminAppointmentsView">
+        <aside class="sidebar">
+          <div class="sidebar-section-title">Admin Menu</div>
+          <nav class="sidebar-nav">
+            <button class="sidebar-item" data-admin-nav="adminDoctorsView">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-id-badge"></i>
+              </span>
+              <span class="sidebar-item-label">Doctors List</span>
+            </button>
+            <button
+              class="sidebar-item active"
+              data-admin-nav="adminAppointmentsView"
+            >
+              <span class="sidebar-item-icon">
+                <i class="fa-regular fa-clipboard"></i>
+              </span>
+              <span class="sidebar-item-label">Appointment List</span>
+            </button>
+            <button class="sidebar-item" data-admin-nav="addDoctorView">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-user-plus"></i>
+              </span>
+              <span class="sidebar-item-label">Add Doctor</span>
+            </button>
+          </nav>
+
+          <div class="sidebar-footer-logout">
+            <button class="logout-pill" data-logout>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </aside>
+
+        <section class="content-panel">
+          <div class="content-heading-row">
+            <div>
+              <h2 class="content-heading">Appointment List</h2>
+              <p class="content-subtitle">
+                Full overview of patient appointments.
+              </p>
+            </div>
+            <div class="back-icon" data-back-to="adminDashboardView">
+              <i class="fa-solid fa-arrow-left"></i>
+            </div>
+          </div>
+
+          <div class="appointment-list" id="adminAppointmentsList"></div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const views = document.querySelectorAll(".view");
+      const timePill = document.getElementById("timePill");
+      const topBarWelcome = document.getElementById("topBarWelcome");
+      const topBarContext = document.getElementById("topBarContext");
+      const topBarAuthBtn = document.getElementById("topBarAuthBtn");
+      const mobileSidebarToggle = document.getElementById(
+        "mobileSidebarToggle"
+      );
+
+      const STORAGE_KEYS = {
+        user: "cms_user",
+        doctors: "cms_doctors",
+        appointments: "cms_appointments",
+      };
+
+      let appState = {
+        currentRole: "patient", // 'patient' | 'admin'
+        ampm: "AM",
+      };
+
+      function formatTime(date) {
+        const hours = date.getHours();
+        const minutes = date.getMinutes().toString().padStart(2, "0");
+        const suffix = hours >= 12 ? "PM" : "AM";
+        const hour12 = hours % 12 || 12;
+        return `${hour12}:${minutes} ${suffix}`;
+      }
+
+      function startClock() {
+        const update = () => {
+          const now = new Date();
+          timePill.textContent = formatTime(now);
+        };
+        update();
+        setInterval(update, 60 * 1000);
+      }
+
+      function showView(id) {
+        views.forEach((v) => v.classList.remove("active"));
+        const view = document.getElementById(id);
+        if (view) {
+          view.classList.add("active");
+        }
+        // Close mobile sidebar when navigating
+        document
+          .querySelectorAll(".sidebar")
+          .forEach((sb) => sb.classList.remove("open"));
+      }
+
+      function saveToStorage(key, data) {
+        localStorage.setItem(key, JSON.stringify(data));
+      }
+
+      function loadFromStorage(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) return fallback;
+          return JSON.parse(raw);
+        } catch (e) {
+          return fallback;
+        }
+      }
+
+      const defaultDoctors = [
+        {
+          id: 1,
+          firstName: "Kavindu",
+          lastName: "Perera",
+          phone: "076 060 0156",
+          specialization: "Cardiologist",
+          qualification: "MBBS, MD (Cardiology)",
+          fee: 1500,
+          gender: "Male",
+        },
+        {
+          id: 2,
+          firstName: "Nadeesha",
+          lastName: "Silva",
+          phone: "076 852 0386",
+          specialization: "Dermatologist",
+          qualification: "MBBS, DDVL",
+          fee: 1800,
+          gender: "Female",
+        },
+        {
+          id: 3,
+          firstName: "Akalanka",
+          lastName: "Jayasinghe",
+          phone: "076 162 5879",
+          specialization: "General Physician",
+          qualification: "MBBS",
+          fee: 1500,
+          gender: "Male",
+        },
+        {
+          id: 4,
+          firstName: "Nalin D",
+          lastName: "Gunarathna",
+          phone: "076 522 9510",
+          specialization: "Cardiac Surgeon",
+          qualification: "MBBS, MS (Surgery)",
+          fee: 2000,
+          gender: "Male",
+        },
+      ];
+
+      const defaultAppointments = [
+        {
+          id: 1,
+          doctorId: 1,
+          doctorName: "Dr. Kavindu Perera",
+          specialization: "Cardiologist",
+          date: "2025-12-12",
+          time: "10:30",
+          ampm: "AM",
+          status: "confirmed",
+          patientName: "Alex",
+        },
+        {
+          id: 2,
+          doctorId: 2,
+          doctorName: "Dr. Nadeesha Silva",
+          specialization: "Dermatologist",
+          date: "2025-12-15",
+          time: "14:00",
+          ampm: "PM",
+          status: "pending",
+          patientName: "Alex",
+        },
+        {
+          id: 3,
+          doctorId: 3,
+          doctorName: "Dr. Akalanka Jayasinghe",
+          specialization: "General Physician",
+          date: "2025-12-19",
+          time: "15:30",
+          ampm: "PM",
+          status: "confirmed",
+          patientName: "Alex",
+        },
+      ];
+
+      function ensureSeedData() {
+        if (!localStorage.getItem(STORAGE_KEYS.doctors)) {
+          saveToStorage(STORAGE_KEYS.doctors, defaultDoctors);
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.appointments)) {
+          saveToStorage(STORAGE_KEYS.appointments, defaultAppointments);
+        }
+      }
+
+      const authView = document.getElementById("authView");
+      const authForm = document.getElementById("authForm");
+      const authError = document.getElementById("authError");
+      const patientTab = document.getElementById("patientTab");
+      const adminTab = document.getElementById("adminTab");
+      const authTitle = document.getElementById("authTitle");
+      const authSubmitBtn = document.getElementById("authSubmitBtn");
+
+      document.querySelectorAll(".toggle-password").forEach((toggle) => {
+        toggle.addEventListener("click", () => {
+          const targetId = toggle.dataset.target;
+          const input = document.getElementById(targetId);
+          if (!input) return;
+          const isPassword = input.type === "password";
+          input.type = isPassword ? "text" : "password";
+          toggle.innerHTML = isPassword
+            ? '<i class="fa-regular fa-eye-slash"></i>'
+            : '<i class="fa-regular fa-eye"></i>';
+        });
+      });
+
+      function setAuthRole(role) {
+        appState.currentRole = role;
+        patientTab.classList.toggle("active", role === "patient");
+        adminTab.classList.toggle("active", role === "admin");
+        authTitle.textContent = "Sign Up";
+        authSubmitBtn.querySelector("span").textContent = "Sign Up";
+        topBarContext.textContent =
+          "We make it easier for you to get the care you need.";
+      }
+
+      patientTab.addEventListener("click", () => setAuthRole("patient"));
+      adminTab.addEventListener("click", () => setAuthRole("admin"));
+
+      topBarAuthBtn.addEventListener("click", () => {
+        // If already logged in, this acts like a "Back to Sign In"
+        showView("authView");
+        topBarAuthBtn.textContent = "Sign In";
+        topBarWelcome.textContent = "Welcome back,";
+        topBarContext.textContent =
+          "We make it easier for you to get the care you need.";
+      });
+
+      function validateAuthForm() {
+        authError.textContent = "";
+        let valid = true;
+        const firstName = authForm.firstName.value.trim();
+        const lastName = authForm.lastName.value.trim();
+        const email = authForm.authEmail.value.trim();
+        const pw = authForm.password.value;
+        const cpw = authForm.confirmPassword.value;
+
+        [
+          "firstName",
+          "lastName",
+          "authEmail",
+          "password",
+          "confirmPassword",
+        ].forEach((name) => {
+          authForm[name].classList.remove("error");
+        });
+
+        if (!firstName) {
+          valid = false;
+          authForm.firstName.classList.add("error");
+        }
+        if (!lastName) {
+          valid = false;
+          authForm.lastName.classList.add("error");
+        }
+        if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+          valid = false;
+          authForm.authEmail.classList.add("error");
+        }
+        if (pw.length < 6) {
+          valid = false;
+          authForm.password.classList.add("error");
+          authError.textContent = "Password must be at least 6 characters.";
+        } else if (pw !== cpw) {
+          valid = false;
+          authForm.confirmPassword.classList.add("error");
+          authError.textContent = "Passwords do not match.";
+        }
+
+        if (!valid && !authError.textContent) {
+          authError.textContent = "Please fill in all required fields.";
+        }
+
+        return valid;
+      }
+
+      authForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (!validateAuthForm()) return;
+
+        const user = {
+          firstName: authForm.firstName.value.trim(),
+          lastName: authForm.lastName.value.trim(),
+          role: appState.currentRole,
+          email: authForm.authEmail.value.trim(),
+        };
+        saveToStorage(STORAGE_KEYS.user, user);
+
+        topBarWelcome.textContent = `Welcome back, ${user.firstName}`;
+        topBarAuthBtn.textContent = "Sign Out";
+
+        if (user.role === "patient") {
+          showView("patientDashboardView");
+          topBarContext.textContent = "Manage your care in one place.";
+        } else {
+          showView("adminDashboardView");
+          topBarContext.textContent = "Overview of your clinic activity.";
+        }
+      });
+
+      //patient login
+      const patientAppointmentListPreview = document.getElementById(
+        "patientAppointmentListPreview"
+      );
+      const patientAppointmentListFull = document.getElementById(
+        "patientAppointmentListFull"
+      );
+      const patientDoctorsGrid = document.getElementById("patientDoctorsGrid");
+      const bookAppointmentError = document.getElementById(
+        "bookAppointmentError"
+      );
+      const bookAppointmentForm = document.getElementById(
+        "bookAppointmentForm"
+      );
+      const ampmToggle = document.getElementById("ampmToggle");
+
+      function getDoctors() {
+        return loadFromStorage(STORAGE_KEYS.doctors, defaultDoctors);
+      }
+
+      function getAppointments() {
+        return loadFromStorage(STORAGE_KEYS.appointments, defaultAppointments);
+      }
+
+      function setAppointments(list) {
+        saveToStorage(STORAGE_KEYS.appointments, list);
+      }
+
+      function renderAppointmentCard(appt) {
+        const statusLabel =
+          appt.status === "confirmed" ? "Confirmed" : "Pending";
+        const badgeClass =
+          appt.status === "confirmed" ? "status-badge" : "status-badge pending";
+        const dateObj = new Date(appt.date);
+        const dateLabel = dateObj.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+        const timeParts = appt.time.split(":");
+        const hour = timeParts[0].padStart(2, "0");
+        const min = timeParts[1];
+        const timeLabel = `${hour}:${min} ${appt.ampm}`;
+
+        const root = document.createElement("article");
+        root.className = "appointment-card";
+        root.innerHTML = `
+          <div>
+            <div class="appointment-title">${appt.doctorName}</div>
+            <div class="appointment-speciality">${appt.specialization}</div>
+          </div>
+          <div class="appointment-meta">
+            <div><span>Date:</span> ${dateLabel}</div>
+            <div><span>Time:</span> ${timeLabel}</div>
+            <div><span>Status:</span> 
+              <span class="${badgeClass}">
+                <span class="status-dot"></span> ${statusLabel}
+              </span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <button class="danger-pill" data-cancel-id="${appt.id}">Cancel</button>
+          </div>
+        `;
+        return root;
+      }
+
+      function renderPatientAppointments() {
+        const user = loadFromStorage(STORAGE_KEYS.user, null);
+        const name = user ? user.firstName : "Alex";
+        const appointments = getAppointments().filter(
+          (a) => a.patientName === name
+        );
+
+        [patientAppointmentListPreview, patientAppointmentListFull].forEach(
+          (container) => {
+            if (!container) return;
+            container.innerHTML = "";
+            if (!appointments.length) {
+              container.innerHTML =
+                '<p style="font-size:13px;color:#6b7280;">No appointments yet. Start by booking your first visit.</p>';
+            } else {
+              appointments.forEach((appt) => {
+                const card = renderAppointmentCard(appt);
+                container.appendChild(card);
+              });
+            }
+          }
+        );
+      }
+
+      function renderPatientDoctors() {
+        const doctors = getDoctors();
+        patientDoctorsGrid.innerHTML = "";
+        doctors.forEach((d) => {
+          const card = document.createElement("article");
+          card.className = "appointment-card";
+          card.style.gridTemplateColumns = "minmax(0, 1.6fr) minmax(0, 1fr)";
+          card.innerHTML = `
+            <div>
+              <div class="appointment-title">Dr. ${d.firstName} ${
+            d.lastName
+          }</div>
+              <div class="appointment-speciality">${d.specialization} &bull; ${
+            d.qualification
+          }</div>
+            </div>
+            <div class="appointment-meta">
+              <div><span>Phone:</span> ${d.phone}</div>
+              <div><span>Fee:</span> $${d.fee.toFixed(2)}</div>
+            </div>
+          `;
+          patientDoctorsGrid.appendChild(card);
+        });
+      }
+
+      function populateDoctorSelect() {
+        const select = document.getElementById("selectDoctor");
+        const doctors = getDoctors();
+        select.innerHTML = '<option value="">Select Doctor</option>';
+        doctors.forEach((d) => {
+          const opt = document.createElement("option");
+          opt.value = d.id;
+          opt.textContent = `Dr. ${d.firstName} ${d.lastName} (${d.specialization})`;
+          select.appendChild(opt);
+        });
+      }
+
+      ampmToggle.addEventListener("click", (e) => {
+        const btn = e.target.closest(".am-pm-btn");
+        if (!btn) return;
+        document
+          .querySelectorAll(".am-pm-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        appState.ampm = btn.dataset.value;
+      });
+
+      bookAppointmentForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        bookAppointmentError.textContent = "";
+        const doctorId = bookAppointmentForm.selectDoctor.value;
+        const date = bookAppointmentForm.appointmentDate.value;
+        const time = bookAppointmentForm.appointmentTime.value;
+        if (!doctorId || !date || !time) {
+          bookAppointmentError.textContent =
+            "Please select doctor, date and time.";
+          return;
+        }
+
+        const doctors = getDoctors();
+        const doctor = doctors.find((d) => String(d.id) === doctorId);
+        const user = loadFromStorage(STORAGE_KEYS.user, {
+          firstName: "Alex",
+        });
+
+        const appointments = getAppointments();
+        const newAppt = {
+          id: Date.now(),
+          doctorId: doctor.id,
+          doctorName: `Dr. ${doctor.firstName} ${doctor.lastName}`,
+          specialization: doctor.specialization,
+          date,
+          time,
+          ampm: appState.ampm,
+          status: "pending",
+          patientName: user.firstName,
+        };
+        appointments.push(newAppt);
+        setAppointments(appointments);
+
+        bookAppointmentForm.reset();
+        appState.ampm = "AM";
+        document
+          .querySelectorAll(".am-pm-btn")
+          .forEach((b) =>
+            b.classList.toggle("active", b.dataset.value === "AM")
+          );
+        renderPatientAppointments();
+        renderAdminAppointments();
+        renderAdminSummary();
+        alert("Appointment booked successfully.");
+      });
+
+      document.addEventListener("click", (e) => {
+        const cancelBtn = e.target.closest(".danger-pill[data-cancel-id]");
+        if (!cancelBtn) return;
+        const id = Number(cancelBtn.dataset.cancelId);
+        if (!confirm("Cancel this appointment?")) return;
+        const appointments = getAppointments().filter((a) => a.id !== id);
+        setAppointments(appointments);
+        renderPatientAppointments();
+        renderAdminAppointments();
+        renderAdminSummary();
+      });
+
+      /***************************************
+       * ADMIN LOGIC
+       ***************************************/
+      const doctorsTableBody = document.getElementById("doctorsTableBody");
+      const doctorsTableBody2 = document.getElementById("doctorsTableBody2");
+      const adminAppointmentsList = document.getElementById(
+        "adminAppointmentsList"
+      );
+      const adminSummaryText = document.getElementById("adminSummaryText");
+      const addDoctorForm = document.getElementById("addDoctorForm");
+      const addDoctorError = document.getElementById("addDoctorError");
+      const doctorClearBtn = document.getElementById("doctorClear");
+      const doctorSearchInputs = [
+        document.getElementById("doctorSearchInput"),
+        document.getElementById("doctorSearchInput2"),
+      ];
+
+      function renderDoctorsTable() {
+        const doctors = getDoctors();
+        const renderToBody = (tbody) => {
+          if (!tbody) return;
+          tbody.innerHTML = "";
+          doctors.forEach((d, idx) => {
+            const tr = document.createElement("tr");
+            tr.dataset.id = d.id;
+            tr.innerHTML = `
+              <td>${idx + 1}.</td>
+              <td>Dr. ${d.firstName} ${d.lastName}</td>
+              <td>${d.phone}</td>
+              <td>${d.specialization}</td>
+              <td>$${d.fee.toFixed(2)}</td>
+              <td>
+                <div class="table-actions">
+                  <i class="fa-regular fa-pen-to-square" title="Edit"></i>
+                  <i class="fa-regular fa-trash-can" title="Delete"></i>
+                </div>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        };
+        renderToBody(doctorsTableBody);
+        renderToBody(doctorsTableBody2);
+      }
+
+      function renderAdminAppointments() {
+        const appointments = getAppointments();
+        adminAppointmentsList.innerHTML = "";
+        if (!appointments.length) {
+          adminAppointmentsList.innerHTML =
+            '<p style="font-size:13px;color:#6b7280;">No appointments scheduled.</p>';
+        } else {
+          appointments.forEach((appt) => {
+            const card = renderAppointmentCard(appt);
+            adminAppointmentsList.appendChild(card);
+          });
+        }
+      }
+
+      function renderAdminSummary() {
+        const doctors = getDoctors();
+        const appointments = getAppointments();
+        const confirmed = appointments.filter(
+          (a) => a.status === "confirmed"
+        ).length;
+        const pending = appointments.filter(
+          (a) => a.status === "pending"
+        ).length;
+        adminSummaryText.innerHTML = `
+          <p>There are <strong>${doctors.length}</strong> doctors on duty today.</p>
+          <p style="margin-top:4px;">You have <strong>${confirmed}</strong> confirmed and <strong>${pending}</strong> pending appointments.</p>
+        `;
+      }
+
+      addDoctorForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        addDoctorError.textContent = "";
+        const form = addDoctorForm;
+        const firstName = form.doctorFirstName.value.trim();
+        const lastName = form.doctorLastName.value.trim();
+        const email = form.doctorEmail.value.trim();
+        const phone = form.doctorPhone.value.trim();
+        const gender = form.querySelector(
+          'input[name="doctorGender"]:checked'
+        ).value;
+        const qualification = form.doctorQualification.value.trim();
+        const specialization = form.doctorSpecialization.value.trim();
+        const feeVal = form.doctorFee.value;
+        const fee = Number(feeVal);
+
+        if (
+          !firstName ||
+          !lastName ||
+          !email ||
+          !phone ||
+          !qualification ||
+          !specialization ||
+          !feeVal
+        ) {
+          addDoctorError.textContent = "Please fill out all fields.";
+          return;
+        }
+
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+          addDoctorError.textContent = "Please provide a valid email address.";
+          return;
+        }
+
+        const doctors = getDoctors();
+        doctors.push({
+          id: Date.now(),
+          firstName,
+          lastName,
+          phone,
+          specialization,
+          qualification,
+          fee: isNaN(fee) ? 0 : fee,
+          gender,
+        });
+        saveToStorage(STORAGE_KEYS.doctors, doctors);
+        renderDoctorsTable();
+        renderPatientDoctors();
+        populateDoctorSelect();
+        renderAdminSummary();
+        form.reset();
+        alert("Doctor added successfully.");
+      });
+
+      doctorClearBtn.addEventListener("click", () => {
+        addDoctorForm.reset();
+        addDoctorError.textContent = "";
+      });
+
+      // Basic delete interaction for doctors
+      document.addEventListener("click", (e) => {
+        const trash = e.target.closest(".fa-trash-can");
+        if (!trash) return;
+        const tr = trash.closest("tr");
+        if (!tr) return;
+        const id = Number(tr.dataset.id);
+        if (!confirm("Remove this doctor from the list?")) return;
+        const doctors = getDoctors().filter((d) => d.id !== id);
+        saveToStorage(STORAGE_KEYS.doctors, doctors);
+        renderDoctorsTable();
+        renderPatientDoctors();
+        populateDoctorSelect();
+        renderAdminSummary();
+      });
+
+      doctorSearchInputs.forEach((input) => {
+        if (!input) return;
+        input.addEventListener("input", () => {
+          const term = input.value.toLowerCase();
+          const doctors = getDoctors().filter((d) => {
+            const name = `${d.firstName} ${d.lastName}`.toLowerCase();
+            return (
+              name.includes(term) ||
+              d.specialization.toLowerCase().includes(term)
+            );
+          });
+          const renderFiltered = (tbody) => {
+            if (!tbody) return;
+            tbody.innerHTML = "";
+            doctors.forEach((d, idx) => {
+              const tr = document.createElement("tr");
+              tr.dataset.id = d.id;
+              tr.innerHTML = `
+                <td>${idx + 1}.</td>
+                <td>Dr. ${d.firstName} ${d.lastName}</td>
+                <td>${d.phone}</td>
+                <td>${d.specialization}</td>
+                <td>Rs${d.fee.toFixed(2)}</td>
+                <td>
+                  <div class="table-actions">
+                    <i class="fa-regular fa-pen-to-square" title="Edit"></i>
+                    <i class="fa-regular fa-trash-can" title="Delete"></i>
+                  </div>
+                </td>
+              `;
+              tbody.appendChild(tr);
+            });
+          };
+          renderFiltered(doctorsTableBody);
+          renderFiltered(doctorsTableBody2);
+        });
+      });
+
+      //logout
+      document
+        .querySelectorAll("[data-nav-target]")
+        .forEach((card) =>
+          card.addEventListener("click", () => showView(card.dataset.navTarget))
+        );
+
+      document.querySelectorAll("[data-patient-nav]").forEach((item) => {
+        item.addEventListener("click", () => {
+          const target = item.dataset.patientNav;
+          document
+            .querySelectorAll("[data-patient-nav]")
+            .forEach((i) => i.classList.remove("active"));
+          item.classList.add("active");
+          showView(target);
+        });
+      });
+
+      document.querySelectorAll("[data-admin-nav]").forEach((item) => {
+        item.addEventListener("click", () => {
+          const target = item.dataset.adminNav;
+          document
+            .querySelectorAll("[data-admin-nav]")
+            .forEach((i) => i.classList.remove("active"));
+          item.classList.add("active");
+          showView(target);
+        });
+      });
+
+      document.querySelectorAll("[data-back-to]").forEach((backBtn) => {
+        backBtn.addEventListener("click", () =>
+          showView(backBtn.dataset.backTo)
+        );
+      });
+
+      document.querySelectorAll("[data-logout]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          localStorage.removeItem(STORAGE_KEYS.user);
+          topBarWelcome.textContent = "Welcome back,";
+          topBarAuthBtn.textContent = "Sign In";
+          showView("authView");
+        });
+      });
+
+      if (mobileSidebarToggle) {
+        mobileSidebarToggle.addEventListener("click", () => {
+          // open or close first sidebar that is currently visible
+          const activeView = document.querySelector(".view.active");
+          if (!activeView) return;
+          const sidebar = activeView.querySelector(".sidebar");
+          if (!sidebar) return;
+          sidebar.classList.toggle("open");
+        });
+      }
+
+      function bootstrapApp() {
+        ensureSeedData();
+        startClock();
+        populateDoctorSelect();
+        renderDoctorsTable();
+        renderPatientDoctors();
+        renderPatientAppointments();
+        renderAdminAppointments();
+        renderAdminSummary();
+
+        const storedUser = loadFromStorage(STORAGE_KEYS.user, null);
+        if (storedUser) {
+          topBarWelcome.textContent = `Welcome back, ${storedUser.firstName}`;
+          topBarAuthBtn.textContent = "Sign Out";
+          appState.currentRole = storedUser.role;
+          if (storedUser.role === "patient") {
+            showView("patientDashboardView");
+            setAuthRole("patient");
+          } else {
+            showView("adminDashboardView");
+            setAuthRole("admin");
+          }
+        } else {
+          showView("authView");
+        }
+      }
+
+      bootstrapApp();
+    </script>
+  </body>
+</html>

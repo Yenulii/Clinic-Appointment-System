@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic - Sign Up</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="signup">
+    <div class="app-shell">
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <div class="avatar-circle">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div>
+            <div class="top-bar-title" id="topBarWelcome">Welcome back,</div>
+            <div class="top-bar-subtitle" id="topBarContext">
+              We make it easier for you to get the care you need.
+            </div>
+          </div>
+        </div>
+        <div class="top-bar-right">
+          <div class="time-pill" id="timePill">7:04</div>
+          <button class="outline-btn" id="topBarAuthBtn">Login</button>
+        </div>
+      </header>
+
+      <main class="auth-page">
+        <section class="auth-hero">
+          <p class="tagline-kicker">CLINIC PORTAL</p>
+          <h1 class="hero-heading">
+            We make it easier for you to get the care you need.
+          </h1>
+          <p class="hero-sub">
+            Sign up as a patient or admin to manage appointments and providers
+            in one place.
+          </p>
+        </section>
+
+        <section class="auth-card">
+          <div class="auth-tabs">
+            <a href="signup.html" class="auth-tab active">Sign Up</a>
+            <a href="login.html" class="auth-tab">Login</a>
+          </div>
+          <div class="auth-body">
+            <h2 class="auth-title">Sign Up</h2>
+            <form id="authForm" novalidate>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label class="form-label" for="firstName">First Name</label>
+                  <input
+                    id="firstName"
+                    name="firstName"
+                    class="input"
+                    type="text"
+                    placeholder="First Name"
+                    required
+                  />
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="lastName">Last Name</label>
+                  <input
+                    id="lastName"
+                    name="lastName"
+                    class="input"
+                    type="text"
+                    placeholder="Last Name"
+                    required
+                  />
+                </div>
+                <div class="form-field full">
+                  <label class="form-label" for="authEmail">Email</label>
+                  <input
+                    id="authEmail"
+                    name="authEmail"
+                    class="input"
+                    type="email"
+                    placeholder="Email"
+                    required
+                  />
+                </div>
+                <div class="form-field full">
+                  <label class="form-label">Role</label>
+                  <select name="role" class="select" required>
+                    <option value="patient">Patient</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div class="form-field full">
+                  <label class="form-label" for="password">Password</label>
+                  <div class="input-wrapper">
+                    <input
+                      id="password"
+                      name="password"
+                      class="input"
+                      type="password"
+                      placeholder="Password"
+                      required
+                      minlength="6"
+                    />
+                    <span
+                      class="toggle-password"
+                      data-target="password"
+                      aria-label="Toggle password visibility"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-field full">
+                  <label class="form-label" for="confirmPassword"
+                    >Confirm Password</label
+                  >
+                  <div class="input-wrapper">
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      class="input"
+                      type="password"
+                      placeholder="Confirm Password"
+                      required
+                    />
+                    <span
+                      class="toggle-password"
+                      data-target="confirmPassword"
+                      aria-label="Toggle confirm password visibility"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <p class="form-error-msg" id="authError"></p>
+              <button type="submit" class="primary-btn">
+                <span>Sign Up</span>
+              </button>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

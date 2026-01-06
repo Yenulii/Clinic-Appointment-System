@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic - Admin Appointments</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="admin-appointments">
+    <div class="app-shell">
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <div class="avatar-circle">
+            <i class="fa-solid fa-user-tie"></i>
+          </div>
+          <div>
+            <div class="top-bar-title" id="topBarWelcome">Welcome back,</div>
+            <div class="top-bar-subtitle" id="topBarContext">
+              Full overview of patient appointments.
+            </div>
+          </div>
+        </div>
+        <div class="top-bar-right">
+          <div class="time-pill" id="timePill">7:04</div>
+          <button class="outline-btn" id="topBarAuthBtn">Sign Out</button>
+          <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </header>
+
+      <main class="shell-with-sidebar">
+        <aside class="sidebar">
+          <div class="sidebar-section-title">Admin Menu</div>
+          <nav class="sidebar-nav">
+            <a href="admin-dashboard.html" class="sidebar-item">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-gauge-high"></i>
+              </span>
+              <span class="sidebar-item-label">Dashboard</span>
+            </a>
+            <a href="admin-add-doctor.html" class="sidebar-item">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-id-badge"></i>
+              </span>
+              <span class="sidebar-item-label">Doctors List</span>
+            </a>
+            <a href="admin-appointments.html" class="sidebar-item active">
+              <span class="sidebar-item-icon">
+                <i class="fa-regular fa-clipboard"></i>
+              </span>
+              <span class="sidebar-item-label">Appointment List</span>
+            </a>
+          </nav>
+
+          <div class="sidebar-footer-logout">
+            <button class="logout-pill" data-logout>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </aside>
+
+        <section class="content-panel">
+          <div class="content-heading-row">
+            <div>
+              <h2 class="content-heading">Appointment List</h2>
+              <p class="content-subtitle">
+                Full overview of patient appointments.
+              </p>
+            </div>
+            <a href="admin-dashboard.html" class="back-icon">
+              <i class="fa-solid fa-arrow-left"></i>
+            </a>
+          </div>
+
+          <div class="appointment-list" id="adminAppointmentsList">
+            <!-- filled by JS -->
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

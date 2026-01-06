@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic - My Appointments</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="patient-appointments">
+    <div class="app-shell">
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <div class="avatar-circle">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div>
+            <div class="top-bar-title" id="topBarWelcome">Welcome back,</div>
+            <div class="top-bar-subtitle" id="topBarContext">
+              Manage your upcoming visits.
+            </div>
+          </div>
+        </div>
+        <div class="top-bar-right">
+          <div class="time-pill" id="timePill">7:04</div>
+          <button class="outline-btn" id="topBarAuthBtn">Sign Out</button>
+          <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </header>
+
+      <main class="shell-with-sidebar">
+        <aside class="sidebar">
+          <div class="sidebar-section-title">Patient Menu</div>
+          <nav class="sidebar-nav">
+            <a href="patient-book-appointment.html" class="sidebar-item">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-circle-plus"></i>
+              </span>
+              <span class="sidebar-item-label">Book Appointment</span>
+            </a>
+            <a href="patient-my-appointments.html" class="sidebar-item active">
+              <span class="sidebar-item-icon">
+                <i class="fa-regular fa-calendar-days"></i>
+              </span>
+              <span class="sidebar-item-label">My Appointments</span>
+            </a>
+            <a href="patient-view-doctors.html" class="sidebar-item">
+              <span class="sidebar-item-icon">
+                <i class="fa-solid fa-user-doctor"></i>
+              </span>
+              <span class="sidebar-item-label">View Doctors</span>
+            </a>
+          </nav>
+
+          <div class="sidebar-footer-logout">
+            <button class="logout-pill" data-logout>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </aside>
+
+        <section class="content-panel">
+          <div class="content-heading-row">
+            <div>
+              <h2 class="content-heading">My Appointments</h2>
+              <p class="content-subtitle">Manage your upcoming visits.</p>
+            </div>
+            <a href="patient-dashboard.html" class="back-icon">
+              <i class="fa-solid fa-arrow-left"></i>
+            </a>
+          </div>
+
+          <div class="appointment-list" id="patientAppointmentListFull">
+            <!-- Filled by JS -->
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

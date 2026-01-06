@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic - Admin Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="admin-dashboard">
+    <div class="app-shell">
+      <!-- Top header -->
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <div class="avatar-circle">
+            <i class="fa-solid fa-user-tie"></i>
+          </div>
+          <div>
+            <div class="top-bar-title" id="topBarWelcome">Welcome back,</div>
+            <div class="top-bar-subtitle" id="topBarContext">
+              Overview of your clinic activity.
+            </div>
+          </div>
+        </div>
+        <div class="top-bar-right">
+          <div class="time-pill" id="timePill">7:04 PM</div>
+          <button class="outline-btn" id="topBarAuthBtn">Logout</button>
+        </div>
+      </header>
+
+      <!-- Main admin dashboard -->
+      <main class="dashboard-page">
+        <section class="dashboard-main">
+          <h2 class="dashboard-heading">Admin Dashboard</h2>
+          <p class="dashboard-tagline">
+            Keep track of doctors, appointments, and clinic activity.
+          </p>
+
+          <div class="dashboard-card-row" style="margin-top: 36px">
+            <a href="admin-add-doctor.html" class="nav-card">
+              <div class="nav-card-icon">
+                <i class="fa-solid fa-id-badge"></i>
+              </div>
+              <div class="nav-card-title">Doctors List</div>
+              <div class="nav-card-sub">View and manage all doctors.</div>
+            </a>
+
+            <a href="admin-appointments.html" class="nav-card">
+              <div class="nav-card-icon">
+                <i class="fa-regular fa-clipboard"></i>
+              </div>
+              <div class="nav-card-title">Appointment List</div>
+              <div class="nav-card-sub">
+                Review and update all clinic bookings.
+              </div>
+            </a>
+
+            <a href="admin-add-doctor.html" class="nav-card">
+              <div class="nav-card-icon">
+                <i class="fa-solid fa-user-plus"></i>
+              </div>
+              <div class="nav-card-title">Add Doctor</div>
+              <div class="nav-card-sub">
+                Register new specialists to your clinic.
+              </div>
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="page-footer">
+        <button class="logout-pill" data-logout>
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Logout</span>
+        </button>
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

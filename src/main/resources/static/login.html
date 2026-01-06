@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic - Login</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="login">
+    <div class="app-shell">
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <div class="avatar-circle">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div>
+            <div class="top-bar-title" id="topBarWelcome">Welcome back,</div>
+            <div class="top-bar-subtitle" id="topBarContext">
+              Please sign in to continue.
+            </div>
+          </div>
+        </div>
+        <div class="top-bar-right">
+          <div class="time-pill" id="timePill">7:04</div>
+          <button class="outline-btn" id="topBarAuthBtn">Sign Up</button>
+        </div>
+      </header>
+
+      <main class="auth-page">
+        <section class="auth-hero">
+          <p class="tagline-kicker">CLINIC PORTAL</p>
+          <h1 class="hero-heading">Sign in to manage your care.</h1>
+          <p class="hero-sub">
+            Access your dashboard, book appointments, and manage clinic data.
+          </p>
+        </section>
+
+        <section class="auth-card">
+          <div class="auth-tabs">
+            <a href="signup.html" class="auth-tab">Sign Up</a>
+            <a href="login.html" class="auth-tab active">Login</a>
+          </div>
+          <div class="auth-body">
+            <h2 class="auth-title">Login</h2>
+            <form id="loginForm" novalidate>
+              <div class="form-grid">
+                <div class="form-field full">
+                  <label class="form-label" for="email">Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    class="input"
+                    type="email"
+                    placeholder="Email"
+                    required
+                  />
+                </div>
+                <div class="form-field full">
+                  <label class="form-label" for="loginPassword">Password</label>
+                  <input
+                    id="loginPassword"
+                    name="password"
+                    class="input"
+                    type="password"
+                    placeholder="Password"
+                    required
+                  />
+                </div>
+                <div class="form-field full">
+                  <label class="form-label">Role</label>
+                  <select name="role" class="select" required>
+                    <option value="patient">Patient</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+              </div>
+              <p class="form-error-msg" id="loginError"></p>
+              <button type="submit" class="primary-btn">
+                <span>Login</span>
+              </button>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
